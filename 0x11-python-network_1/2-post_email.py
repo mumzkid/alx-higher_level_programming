@@ -1,13 +1,18 @@
 #!/usr/bin/python3
-"""Sends a form data to a URL."""
+""" Script that takes in a URL and an email, sends a POST request
+ And displays the body of the response
+"""
+
 import sys
-from urllib import request, parse
+import urllib.parse
+import urllib.request
 
 
-if __name__ == '__main__':
-    if len(sys.argv) > 2:
-        url = sys.argv[1]
-        email = sys.argv[2]
-        form_data = bytes(parse.urlencode([('email', email)]), 'utf-8')
-        with request.urlopen(sys.argv[1], data=form_data) as response:
-            print(response.read().decode('utf-8'))
+if __name__ == "__main__":
+    url = sys.argv[1]
+    value = {"email": sys.argv[2]}
+    data = urllib.parse.urlencode(value).encode("ascii")
+
+    request = urllib.request.Request(url, data)
+    with urllib.request.urlopen(request) as resp:
+        print(resp.read().decode("utf-8"))
